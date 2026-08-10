@@ -24,6 +24,14 @@ resource belongs to an `Organization` and must be scoped accordingly.
 - New migrations that add a tenant-scoped table must include a not-null
   `organization_id` foreign key from the start.
 
+## Authentication rules
+
+- Users authenticate through Devise using email and password.
+- Keep `acts_as_tenant(:organization)` on `User` and preserve the current
+  organization when handling authenticated requests.
+- Protect authenticated application routes with `authenticate_user!`.
+- Use `/login` and `/logout` for the Devise session endpoints.
+
 ## Workflow expected from the agent
 
 1. Read the linked GitHub issue in full, including acceptance criteria.
@@ -40,6 +48,8 @@ resource belongs to an `Organization` and must be scoped accordingly.
   controllers, no business logic in views).
 - Prefer explicit, boring code over clever metaprogramming.
 - Every new model, service, or job needs at least one spec.
+- RSpec examples belong under `spec/`; request specs should cover authentication
+  redirects and protected routes.
 
 ## Commits and PRs
 
